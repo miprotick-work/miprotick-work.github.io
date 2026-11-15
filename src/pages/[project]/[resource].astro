@@ -1,5 +1,6 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 import Base from '../../layouts/Base.astro';
 import { site } from '../../config/site';
 import {
@@ -7,7 +8,9 @@ import {
   getResourcesFor,
   resourceParts,
   resourceLabel,
-  contactFor,
+  contactsFor,
+  renderedHtml,
+  contactLinksHtml,
   formatDate,
   type Resource,
   type Project,
@@ -24,7 +27,9 @@ export async function getStaticPaths() {
 }
 
 const { resource, project } = Astro.props as { resource: Resource; project: Project };
-const { Content, headings } = await render(resource);
+const emails = contactsFor(project);
+const html = renderedHtml(resource, emails);
+const headings = (resource.rendered?.metadata?.headings ?? []) as MarkdownHeading[];
 const siblings = await getResourcesFor(project.id);
 const toc = headings.filter((h) => h.depth === 2);
 const { slug } = resourceParts(resource);
@@ -76,9 +81,9 @@ const title = `${resource.data.title} — ${project.data.name}`;
       </aside>
 
       <article class="prose">
-        <Content />
+        <Fragment set:html={html} />
         <footer class="doc-foot mono">
-          <p>Questions about this document? <a href={`mailto:${contactFor(project)}?subject=${encodeURIComponent(title)}`}>{contactFor(project)}</a></p>
+          <p>Questions about this document? Email <Fragment set:html={contactLinksHtml(emails)} />.</p>
           <p class="no-print">
             <a href={historyUrl} target="_blank" rel="noopener">Revision history ↗</a>
             <span aria-hidden="true"> · </span>

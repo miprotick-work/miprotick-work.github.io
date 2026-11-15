@@ -10,7 +10,7 @@ const year = new Date().getFullYear();
       {site.socials.map((s) => (
         <li><a href={s.href} rel="me noopener" target="_blank">{s.label}</a></li>
       ))}
-      <li><a href={`mailto:${site.contactEmail}`}>Contact</a></li>
+      <li><a href={`mailto:${site.contactEmails.join(',')}`}>Contact</a></li>
     </ul>
   </div>
 </footer>

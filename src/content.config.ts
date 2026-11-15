@@ -24,8 +24,11 @@ const projects = defineCollection({
     order: z.number().default(100),
     /** Accent color for the project card / page */
     accent: z.string().optional(),
-    /** Overrides site contactEmail in this project's pages */
-    contactEmail: z.email().optional(),
+    /** Overrides the site-wide contactEmails for this project — a single email or a list */
+    contactEmails: z
+      .union([z.email(), z.array(z.email()).min(1)])
+      .transform((v) => (Array.isArray(v) ? v : [v]))
+      .optional(),
     links: z
       .object({
         website: z.url().optional(),

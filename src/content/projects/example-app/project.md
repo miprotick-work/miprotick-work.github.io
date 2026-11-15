@@ -8,7 +8,10 @@ tags: []
 featured: true
 order: 100
 # accent: "#7c5cff"
-# contactEmail: support@example.com # overrides the site-wide email for this project
+# contactEmails: support@example.com # override site-wide emails: one email…
+# contactEmails:                      # …or a list
+#   - support@example.com
+#   - help@example.com
 links: {}
 #  website: https://…
 #  appStore: https://apps.apple.com/app/…

@@ -1,12 +1,12 @@
 ---
-import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import {
   getProjects,
   getResourcesFor,
   resourceParts,
   resourceLabel,
-  contactFor,
+  contactsFor,
+  renderedHtml,
   statusLabel,
   formatDate,
   type Project,
@@ -20,10 +20,10 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props as { project: Project };
 const { data } = project;
-const { Content } = await render(project);
 const resources = await getResourcesFor(project.id);
 const stats = data.repo ? await getRepoStats(data.repo) : null;
-const email = contactFor(project);
+const emails = contactsFor(project);
+const overview = renderedHtml(project, emails);
 
 const links = [
   data.links.website && { label: 'Website', href: data.links.website },
@@ -58,7 +58,7 @@ const links = [
 
     <div class="layout">
       <div class="prose">
-        <Content />
+        <Fragment set:html={overview} />
       </div>
 
       <aside>
@@ -93,7 +93,11 @@ const links = [
 
         <section>
           <h2 class="eyebrow">Contact</h2>
-          <a class="mail" href={`mailto:${email}?subject=${encodeURIComponent(data.name)}`}>{email}</a>
+          <ul class="mails">
+            {emails.map((e) => (
+              <li><a class="mail" href={`mailto:${e}?subject=${encodeURIComponent(data.name)}`}>{e}</a></li>
+            ))}
+          </ul>
         </section>
 
         {data.tags.length > 0 && (
@@ -140,6 +144,7 @@ const links = [
   .stats { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; margin: 0; }
   .stats dt { color: var(--ink-soft); }
   .stats dd { margin: 0; text-align: right; }
+  .mails { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
   .mail { font-family: var(--font-display); text-underline-offset: 3px; word-break: break-all; }
 
   @media (max-width: 56rem) {

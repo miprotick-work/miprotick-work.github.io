@@ -27,8 +27,31 @@ export async function getResourcesFor(projectSlug: string): Promise<Resource[]> 
   return all.sort((a, b) => rank(a) - rank(b) || a.data.title.localeCompare(b.data.title));
 }
 
-export function contactFor(p: Project) {
-  return p.data.contactEmail ?? site.contactEmail;
+/** The project's override emails, or the site-wide ones. */
+export function contactsFor(p: Project): string[] {
+  return p.data.contactEmails ?? [...site.contactEmails];
+}
+
+/** "a", "a or b", "a, b, or c" */
+export function joinOr(items: string[]) {
+  if (items.length <= 2) return items.join(' or ');
+  return `${items.slice(0, -1).join(', ')}, or ${items.at(-1)}`;
+}
+
+const escapeHtml = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
+/** HTML mailto links joined with "or", e.g. for inline use in documents. */
+export function contactLinksHtml(emails: string[]) {
+  return joinOr(emails.map((e) => `<a href="mailto:${escapeHtml(e)}">${escapeHtml(e)}</a>`));
+}
+
+/**
+ * Rendered markdown HTML with `{{contact}}` replaced by the project's contact
+ * links. Resolved at render time so overrides apply to every document.
+ */
+export function renderedHtml(entry: Project | Resource, emails: string[]) {
+  return (entry.rendered?.html ?? '').replaceAll('{{contact}}', contactLinksHtml(emails));
 }
 
 export const statusLabel: Record<Project['data']['status'], string> = {

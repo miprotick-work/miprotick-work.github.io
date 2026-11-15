@@ -8,7 +8,7 @@ Need help with **Example App**? We're happy to help.
 
 ## Contact support
 
-Email **[hello@example.com](mailto:hello@example.com?subject=Example%20App%20support)** and we'll usually reply within **2 business days**.
+Email **{{contact}}** and we'll usually reply within **2 business days**.
 
 To help us solve your problem faster, please include:
 
@@ -38,7 +38,7 @@ Subscriptions are managed by your app store:
 
 ## Reporting a bug or security issue
 
-Email **hello@example.com** with the subject line "Bug" or "Security". Please report security issues privately rather than publicly.
+Email **{{contact}}** with the subject line "Bug" or "Security". Please report security issues privately rather than publicly.
 
 ## Legal
 

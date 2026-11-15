@@ -22,7 +22,7 @@ Your account is deactivated immediately.
 
 ## Option 2: Request deletion by email
 
-If you no longer have the app installed, send an email to **[hello@example.com](mailto:hello@example.com?subject=Account%20deletion%20request%20%E2%80%94%20Example%20App)** from the email address linked to your account, with the subject **"Account deletion request"**. We may ask you to confirm that you own the account before we delete anything.
+If you no longer have the app installed, send an email to **{{contact}}** from the email address linked to your account, with the subject **"Account deletion request"**. We may ask you to confirm that you own the account before we delete anything.
 
 We will process your request within **30 days** and confirm by email when it's done.
 
@@ -40,4 +40,4 @@ Some information may be kept for up to **90 days** in encrypted backups before i
 
 > Uninstalling the app does **not** delete your account. Use one of the options above.
 
-Questions? Email **hello@example.com**. See also our [Privacy Policy](/example-app/privacy-policy/).
+Questions? Email **{{contact}}**. See also our [Privacy Policy](/example-app/privacy-policy/).

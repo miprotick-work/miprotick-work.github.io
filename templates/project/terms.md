@@ -64,4 +64,4 @@ These Terms are governed by the laws of <!-- TODO: jurisdiction, e.g. Bangladesh
 
 ## Contact
 
-Questions about these Terms? Email **{{email}}**.
+Questions about these Terms? Email **{{contact}}**.

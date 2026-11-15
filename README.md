@@ -37,6 +37,7 @@ New projects start as `draft: true`. Work through the `<!-- TODO -->` comments i
 
 - **Extra resources:** drop any other `.md` file into the project folder (e.g. `eula.md`, `cookie-policy.md`) and it becomes `/<project>/eula/`. To give it a fixed label and position in the navigation, add it to `resourceTypes` in [`src/config/site.ts`](src/config/site.ts).
 - **Remove a resource:** delete its file.
+- **Contact emails:** documents use the `{{contact}}` token, which is filled in when the page renders. By default it lists the site-wide `contactEmails` from `site.ts`. To override them for one project, set `contactEmails:` in its `project.md` to a single email or a list.
 - **Live repo stats:** set `repo: owner/name` in `project.md`. Only public repos return stats, and the build never fails on an API error.
 - **Updating a policy:** keep `effectiveDate`, and add or bump `lastUpdated`. The page links to its git revision history automatically.
 
@@ -44,7 +45,7 @@ New projects start as `draft: true`. Work through the `<!-- TODO -->` comments i
 
 ## Branding
 
-Everything site-wide (name, tagline, contact email, socials) is in [`src/config/site.ts`](src/config/site.ts). Colors and fonts are in [`src/styles/global.css`](src/styles/global.css).
+Everything site-wide (brand, name, tagline, contact emails, socials) is in [`src/config/site.ts`](src/config/site.ts). Colors and fonts are in [`src/styles/global.css`](src/styles/global.css).
 
 ## Deploy (GitHub Pages)
 

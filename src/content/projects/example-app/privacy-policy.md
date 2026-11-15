@@ -60,7 +60,7 @@ We use reasonable technical and organisational safeguards, including encryption 
 
 ## Your rights
 
-Depending on where you live, you may have the right to access, correct, export or delete your personal data, and to object to or restrict certain processing. To use any of these rights, email **hello@example.com**. We will respond within 30 days.
+Depending on where you live, you may have the right to access, correct, export or delete your personal data, and to object to or restrict certain processing. To use any of these rights, email **{{contact}}**. We will respond within 30 days.
 
 ## Children's privacy
 
@@ -76,4 +76,4 @@ We may update this policy from time to time. Changes will be posted on this page
 
 ## Contact
 
-If you have questions about this Privacy Policy, contact **Mezbaul Islam Protick** at **hello@example.com**.
+If you have questions about this Privacy Policy, contact **Mezbaul Islam Protick** at **{{contact}}**.

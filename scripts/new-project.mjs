@@ -25,14 +25,14 @@ const pick = (key) => config.match(new RegExp(`${key}:\\s*'([^']+)'`))?.[1] ?? '
 const name = nameParts.join(' ') || slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 const vars = {
   name,
-  nameUrl: encodeURIComponent(name),
   slug,
   author: pick('author'),
-  email: pick('contactEmail'),
   githubUser: pick('githubUser'),
   siteUrl: pick('url'),
   date: new Date().toISOString().slice(0, 10),
 };
+// {{contact}} is intentionally left in the files: it is resolved when the page renders,
+// from the project's `contactEmails` override or the site-wide `contactEmails`.
 
 const dest = join(root, 'src/content/projects', slug);
 try {
