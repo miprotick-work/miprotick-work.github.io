@@ -35,7 +35,7 @@ delete-account.md   → /habit-tracker/delete-account/
 
 New projects start as `draft: true`. Work through the `<!-- TODO -->` comments in each file, delete the sections that don't apply, then set `draft: false` to publish.
 
-- **Extra resources:** drop any other `.md` file into the project folder (e.g. `eula.md`, `cookie-policy.md`) and it becomes `/<project>/eula/`. To give it a fixed label and position in the navigation, add it to `resourceTypes` in [`src/config/site.ts`](src/config/site.ts).
+- **Extra resources:** drop any other `.md` file into the project folder (e.g. `eula.md`, `cookie-policy.md`) and it becomes `/<project>/eula/`. Its navigation label is its `title`; to fix its position in the navigation, add it to `resourceTypes` in [`src/config/site.ts`](src/config/site.ts).
 - **Remove a resource:** delete its file.
 - **Contact emails:** documents use the `{{contact}}` token, which is filled in when the page renders. By default it lists the site-wide `contactEmails` from `site.ts`. To override them for one project, set `contactEmails:` in its `project.md` to a single email or a list.
 - **Live repo stats:** set `repo: owner/name` in `project.md`. Only public repos return stats, and the build never fails on an API error.

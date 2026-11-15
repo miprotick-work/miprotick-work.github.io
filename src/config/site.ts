@@ -24,13 +24,12 @@ export const site = {
 } as const;
 
 /**
- * Known resource types: display label + order in navigation.
- * Any other `*.md` file in a project folder still works — it just sorts last
- * and uses its own `title`.
+ * Navigation order of known resource files. Labels come from each document's
+ * `title`. Any other `*.md` file in a project folder still works and sorts last.
  */
-export const resourceTypes: Record<string, { label: string; order: number }> = {
-  'privacy-policy': { label: 'Privacy Policy', order: 1 },
-  terms: { label: 'Terms & Conditions', order: 2 },
-  support: { label: 'Support', order: 3 },
-  'delete-account': { label: 'Account & Data Deletion', order: 4 },
+export const resourceTypes: Record<string, { order: number }> = {
+  'privacy-policy': { order: 1 },
+  terms: { order: 2 },
+  support: { order: 3 },
+  'delete-account': { order: 4 },
 };

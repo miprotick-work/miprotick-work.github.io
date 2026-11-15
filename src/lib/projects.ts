@@ -17,8 +17,9 @@ export function resourceParts(r: Resource) {
   return { project, slug };
 }
 
+/** Navigation label: the document's own title, so each project can word it its own way. */
 export function resourceLabel(r: Resource) {
-  return resourceTypes[resourceParts(r).slug]?.label ?? r.data.title;
+  return r.data.title;
 }
 
 export async function getResourcesFor(projectSlug: string): Promise<Resource[]> {
