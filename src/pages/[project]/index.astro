@@ -1,0 +1,149 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import {
+  getProjects,
+  getResourcesFor,
+  resourceParts,
+  resourceLabel,
+  contactFor,
+  statusLabel,
+  formatDate,
+  type Project,
+} from '../../lib/projects';
+import { getRepoStats } from '../../lib/github';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { project: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: Project };
+const { data } = project;
+const { Content } = await render(project);
+const resources = await getResourcesFor(project.id);
+const stats = data.repo ? await getRepoStats(data.repo) : null;
+const email = contactFor(project);
+
+const links = [
+  data.links.website && { label: 'Website', href: data.links.website },
+  data.links.appStore && { label: 'App Store', href: data.links.appStore },
+  data.links.playStore && { label: 'Google Play', href: data.links.playStore },
+  stats?.url && { label: 'Source', href: stats.url },
+].filter(Boolean) as { label: string; href: string }[];
+---
+
+<Base title={data.name} description={data.tagline}>
+  <article class="wrap" style={data.accent ? `--accent:${data.accent}` : undefined}>
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href="/">~</a><span>/</span><span aria-current="page">{project.id}</span>
+    </nav>
+
+    <header class="head">
+      <div class="badges">
+        <span class="pill" data-status={data.status}>{statusLabel[data.status]}</span>
+        {data.platforms.map((p) => <span class="pill">{p}</span>)}
+        {data.draft && <span class="pill">Draft: hidden in production</span>}
+      </div>
+      <h1>{data.name}</h1>
+      <p class="tagline">{data.tagline}</p>
+      {links.length > 0 && (
+        <div class="links">
+          {links.map((l, i) => (
+            <a class={`btn${i === 0 ? ' primary' : ''}`} href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="layout">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <aside>
+        {resources.length > 0 && (
+          <section>
+            <h2 class="eyebrow">Public resources</h2>
+            <ul class="res">
+              {resources.map((r) => (
+                <li>
+                  <a href={`/${r.id}/`}>
+                    <span>{resourceLabel(r)}</span>
+                    <span class="mono path">/{resourceParts(r).slug}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {stats && (
+          <section>
+            <h2 class="eyebrow">Repository</h2>
+            <dl class="stats mono">
+              {stats.language && <><dt>Language</dt><dd>{stats.language}</dd></>}
+              <dt>Stars</dt><dd>{stats.stars}</dd>
+              <dt>Forks</dt><dd>{stats.forks}</dd>
+              {stats.license && <><dt>License</dt><dd>{stats.license}</dd></>}
+              <dt>Last push</dt><dd>{formatDate(stats.pushedAt)}</dd>
+            </dl>
+          </section>
+        )}
+
+        <section>
+          <h2 class="eyebrow">Contact</h2>
+          <a class="mail" href={`mailto:${email}?subject=${encodeURIComponent(data.name)}`}>{email}</a>
+        </section>
+
+        {data.tags.length > 0 && (
+          <section>
+            <h2 class="eyebrow">Tags</h2>
+            <div class="badges">{data.tags.map((t) => <span class="pill">#{t}</span>)}</div>
+          </section>
+        )}
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .crumbs { display: flex; gap: 0.4rem; padding-top: 2.5rem; color: var(--ink-soft); }
+  .crumbs a { text-decoration: none; color: var(--accent); }
+  .head { padding-block: 2.5rem 3rem; border-bottom: 1px solid var(--line); }
+  .badges { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); margin-top: 1.2rem; letter-spacing: -0.03em; }
+  .tagline { font-size: 1.2rem; color: var(--ink-soft); max-width: 40rem; margin: 1rem 0 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    gap: 4rem;
+    padding-top: 2.5rem;
+  }
+  .prose :global(h2:first-child) { border-top: 0; padding-top: 0; margin-top: 0; }
+  aside { display: grid; gap: 2rem; align-content: start; position: sticky; top: 5.5rem; }
+  aside h2 { font-weight: 400; margin-bottom: 0.8rem; }
+  .res { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .res li + li { border-top: 1px solid var(--line); }
+  .res a {
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    font: 500 0.95rem var(--font-display);
+    background: var(--bg-elev);
+    transition: background 0.15s;
+  }
+  .res a:hover { background: color-mix(in srgb, var(--accent) 10%, var(--bg-elev)); }
+  .path { color: var(--ink-soft); font-size: 0.72rem; white-space: nowrap; }
+  .stats { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; margin: 0; }
+  .stats dt { color: var(--ink-soft); }
+  .stats dd { margin: 0; text-align: right; }
+  .mail { font-family: var(--font-display); text-underline-offset: 3px; word-break: break-all; }
+
+  @media (max-width: 56rem) {
+    .layout { grid-template-columns: 1fr; gap: 3rem; }
+    aside { position: static; order: -1; }
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site } from '../config/site';
+import { getProjects } from '../lib/projects';
+
+const projects = await getProjects();
+const featured = projects.filter((p) => p.data.featured);
+const others = projects.filter((p) => !p.data.featured);
+const ordered = [...featured, ...others];
+---
+
+<Base>
+  <section class="hero wrap">
+    <p class="eyebrow">{site.author} — Workspace</p>
+    <h1>
+      Building useful things,<br />
+      <span class="hl">one project</span> at a time.
+    </h1>
+    <p class="lede">{site.intro}</p>
+    <div class="cta">
+      <a class="btn primary" href="#work">See the work ↓</a>
+      <a class="btn" href={`https://github.com/${site.githubUser}`} target="_blank" rel="me noopener">
+        github.com/{site.githubUser}
+      </a>
+    </div>
+  </section>
+
+  <section id="work" class="wrap section">
+    <div class="section-head">
+      <h2>Work</h2>
+      <span class="mono count">{String(ordered.length).padStart(2, '0')} projects</span>
+    </div>
+    {
+      ordered.length > 0 ? (
+        <div class="grid">
+          {ordered.map((project, i) => (
+            <ProjectCard project={project} index={i} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty mono">New projects are on the way.</p>
+      )
+    }
+  </section>
+
+  <section id="about" class="wrap section about">
+    <div class="section-head">
+      <h2>About</h2>
+    </div>
+    <div class="about-grid">
+      <p class="about-text">
+        I'm {site.author}, a software engineer. Each project here has its own page with an overview,
+        links and its public documents, such as the privacy policy, terms, support and account
+        deletion, so users and app stores always have one permanent place to find them.
+      </p>
+      <dl class="facts">
+        <div><dt class="eyebrow">Contact</dt><dd><a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></dd></div>
+        <div><dt class="eyebrow">GitHub</dt><dd><a href={`https://github.com/${site.githubUser}`} target="_blank" rel="me noopener">@{site.githubUser}</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(4rem, 12vw, 9rem) clamp(3rem, 8vw, 6rem);
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0 -50vw;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 60% 70% at 30% 40%, #000 20%, transparent 75%);
+    opacity: 0.55;
+  }
+  h1 {
+    font-size: clamp(2.6rem, 7.5vw, 5.4rem);
+    font-weight: 600;
+    margin-top: 1.2rem;
+    max-width: 18ch;
+    letter-spacing: -0.035em;
+  }
+  .hl {
+    background: linear-gradient(transparent 62%, color-mix(in srgb, var(--accent-glow) 55%, transparent) 62%);
+    padding-inline: 0.05em;
+  }
+  .lede {
+    max-width: 38rem;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    margin-top: 1.6rem;
+  }
+  .cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.2rem; }
+
+  .section { padding-top: 4rem; scroll-margin-top: 3rem; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+  .section-head h2 { font-size: 1.9rem; }
+  .count { color: var(--ink-soft); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: 1.1rem;
+  }
+  .empty { color: var(--ink-soft); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+  }
+  .about-text { font-size: 1.15rem; margin: 0; max-width: 40rem; }
+  .facts { margin: 0; display: grid; gap: 1.2rem; align-content: start; }
+  .facts dd { margin: 0.25rem 0 0; font-family: var(--font-display); }
+  .facts a { text-underline-offset: 3px; }
+  @media (max-width: 48rem) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+</style>

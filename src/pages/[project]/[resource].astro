@@ -1,0 +1,143 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { site } from '../../config/site';
+import {
+  getProjects,
+  getResourcesFor,
+  resourceParts,
+  resourceLabel,
+  contactFor,
+  formatDate,
+  type Resource,
+  type Project,
+} from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const visible = new Map((await getProjects()).map((p) => [p.id, p]));
+  const resources = await getCollection('resources');
+  return resources.flatMap((resource) => {
+    const { project, slug } = resourceParts(resource);
+    const owner = visible.get(project);
+    return owner ? [{ params: { project, resource: slug }, props: { resource, project: owner } }] : [];
+  });
+}
+
+const { resource, project } = Astro.props as { resource: Resource; project: Project };
+const { Content, headings } = await render(resource);
+const siblings = await getResourcesFor(project.id);
+const toc = headings.filter((h) => h.depth === 2);
+const { slug } = resourceParts(resource);
+const updated = resource.data.lastUpdated ?? resource.data.effectiveDate;
+const historyUrl = `https://github.com/${site.sourceRepo}/commits/${site.sourceBranch}/${resource.filePath}`;
+const title = `${resource.data.title} — ${project.data.name}`;
+
+---
+
+<Base title={title} description={resource.data.description ?? `${resource.data.title} for ${project.data.name}.`}>
+  <div class="wrap">
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href="/">~</a><span>/</span>
+      <a href={`/${project.id}/`}>{project.id}</a><span>/</span>
+      <span aria-current="page">{slug}</span>
+    </nav>
+
+    <header class="head">
+      <p class="eyebrow">{project.data.name}</p>
+      <h1>{resource.data.title}</h1>
+      <dl class="dates mono">
+        <div><dt>Effective</dt><dd><time datetime={resource.data.effectiveDate.toISOString()}>{formatDate(resource.data.effectiveDate)}</time></dd></div>
+        <div><dt>Last updated</dt><dd><time datetime={updated.toISOString()}>{formatDate(updated)}</time></dd></div>
+      </dl>
+    </header>
+
+    <div class="layout">
+      <aside class="no-print">
+        {siblings.length > 1 && (
+          <nav aria-label={`${project.data.name} documents`}>
+            <h2 class="eyebrow">Documents</h2>
+            <ul>
+              {siblings.map((r) => (
+                <li>
+                  <a href={`/${r.id}/`} aria-current={r.id === resource.id ? 'page' : undefined}>{resourceLabel(r)}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+        {toc.length > 2 && (
+          <nav aria-label="On this page">
+            <h2 class="eyebrow">On this page</h2>
+            <ol class="toc">
+              {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+            </ol>
+          </nav>
+        )}
+      </aside>
+
+      <article class="prose">
+        <Content />
+        <footer class="doc-foot mono">
+          <p>Questions about this document? <a href={`mailto:${contactFor(project)}?subject=${encodeURIComponent(title)}`}>{contactFor(project)}</a></p>
+          <p class="no-print">
+            <a href={historyUrl} target="_blank" rel="noopener">Revision history ↗</a>
+            <span aria-hidden="true"> · </span>
+            <button type="button" class="print" onclick="window.print()">Print / save as PDF</button>
+          </p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .crumbs { display: flex; flex-wrap: wrap; gap: 0.4rem; padding-top: 2.5rem; color: var(--ink-soft); }
+  .crumbs a { text-decoration: none; color: var(--accent); }
+  .head { padding-block: 2.5rem; border-bottom: 1px solid var(--line); }
+  h1 { font-size: clamp(2.2rem, 5.5vw, 3.6rem); margin-top: 0.8rem; letter-spacing: -0.03em; }
+  .dates { display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem; margin: 1.5rem 0 0; }
+  .dates dt { color: var(--ink-soft); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; }
+  .dates dd { margin: 0.2rem 0 0; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    gap: 4rem;
+    padding-top: 2.5rem;
+  }
+  .prose :global(h2:first-child) { border-top: 0; padding-top: 0; margin-top: 0; }
+  aside { display: grid; gap: 2rem; align-content: start; position: sticky; top: 5.5rem; max-height: calc(100dvh - 7rem); overflow-y: auto; }
+  aside h2 { font-weight: 400; margin-bottom: 0.7rem; }
+  aside ul, aside ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; }
+  aside a {
+    display: block;
+    padding: 0.35rem 0.7rem;
+    border-left: 2px solid var(--line);
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  aside a:hover { color: var(--ink); border-color: var(--ink-soft); }
+  aside a[aria-current='page'] { color: var(--ink); border-color: var(--accent); font-weight: 600; }
+  .toc a { font-size: 0.84rem; }
+
+  .doc-foot {
+    margin-top: 4rem !important;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .doc-foot p { margin: 0.4rem 0; color: var(--ink-soft); }
+  .print {
+    background: none; border: 0; padding: 0; cursor: pointer;
+    font: inherit; color: var(--accent); text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  @media (max-width: 56rem) {
+    .layout { grid-template-columns: 1fr; gap: 2rem; }
+    aside { position: static; max-height: none; }
+    .toc { display: none !important; }
+    aside nav:has(.toc) { display: none; }
+  }
+</style>

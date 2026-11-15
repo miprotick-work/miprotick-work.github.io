@@ -1,0 +1,81 @@
+---
+import type { Project } from '../lib/projects';
+import { statusLabel } from '../lib/projects';
+import { getRepoStats } from '../lib/github';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+const { data } = project;
+const stats = data.repo ? await getRepoStats(data.repo) : null;
+const num = String(index + 1).padStart(2, '0');
+---
+
+<a
+  class="card"
+  href={`/${project.id}/`}
+  style={data.accent ? `--card-accent:${data.accent}` : undefined}
+>
+  <div class="top">
+    <span class="mono num">{num}</span>
+    <span class="pill" data-status={data.status}>{statusLabel[data.status]}</span>
+  </div>
+  <h3>{data.name}{data.draft && <span class="draft mono"> draft</span>}</h3>
+  <p>{data.tagline}</p>
+  <div class="meta mono">
+    {data.platforms.length > 0 && <span>{data.platforms.join(' · ')}</span>}
+    {stats?.language && <span>{stats.language}</span>}
+    {stats && stats.stars > 0 && <span>★ {stats.stars}</span>}
+  </div>
+  <span class="arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .card {
+    --card-accent: var(--accent);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.5rem;
+    min-height: 15rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 3px;
+    background: var(--card-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .card:hover { border-color: color-mix(in srgb, var(--ink) 35%, var(--line)); transform: translateY(-2px); }
+  .card:hover::after { transform: scaleX(1); }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .num { color: var(--card-accent); }
+  h3 { font-size: 1.4rem; margin-top: 0.6rem; }
+  .draft { font-size: 0.7rem; color: var(--ink-soft); vertical-align: middle; }
+  p { margin: 0; color: var(--ink-soft); flex: 1; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.9rem; color: var(--ink-soft); }
+  .arrow {
+    position: absolute;
+    right: 1.4rem;
+    bottom: 1.2rem;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+  }
+  .card:hover .arrow { transform: translateX(4px); color: var(--card-accent); }
+  @media (prefers-reduced-motion: reduce) {
+    .card, .card::after, .arrow { transition: none; }
+  }
+</style>
