@@ -2,6 +2,7 @@
 title: Privacy Policy
 description: Hidayah does not collect, store or share any personal information. Here is exactly what the app handles.
 effectiveDate: 2026-11-15
+lastUpdated: 2026-11-16
 ---
 
 This Privacy Policy explains how **Hidayah** ("the App", "we", "us") handles information. Hidayah is an Android app, developed by **Mezbaul Islam Protick**, that shows verses of the Quran as a wallpaper and a home-screen widget.
@@ -62,7 +63,7 @@ All communication with AlQuran Cloud is encrypted in transit using HTTPS. Data s
 
 ## Children's privacy
 
-The App is suitable for all ages and collects no information from anyone, including children under 13.
+The App is not directed at children under 13, and it collects no information from anyone, including children.
 
 ## Your rights
 

@@ -48,4 +48,5 @@ It's a quiet, everyday reminder: every time you unlock your phone, there's a ver
 - **AndroidX WorkManager** for independent background schedules
 - **Material Components** for the interface
 - **[AlQuran Cloud API](https://alquran.cloud/api)** for verses (Uthmani script, Saheeh International, Bengali)
-- **fastlane** and GitHub Actions for signed releases to Google Play
+- **Fastlane** and GitHub Actions for signed releases to Google Play
+- **Fonts** used - [Almendra](https://fonts.google.com/specimen/Almendra) and [Alinur Nobin](https://lipighor.com/AlinurNobin.html)
