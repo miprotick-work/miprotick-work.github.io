@@ -49,13 +49,19 @@ Everything site-wide (brand, name, tagline, contact emails, socials) is in [`src
 
 ## Deploy (GitHub Pages)
 
-1. Create a **public** repo named `miprotick-work.github.io` under the `miprotick-work` account.
-2. Push this folder to its `main` branch.
-3. Go to **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**.
+| | |
+| --- | --- |
+| Repo | [`miprotick-work/miprotick-work.github.io`](https://github.com/miprotick-work/miprotick-work.github.io) |
+| Live site | <https://miprotick-work.github.io/> |
+| Pages source | **Settings → Pages → Source: GitHub Actions** |
 
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds and deploys on every push to `main`, and again every Monday to refresh the repo stats.
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds and deploys on every push to `main`, and again every Monday to refresh the repo stats. You can also run it manually from the **Actions** tab.
 
-**Custom domain (optional):** set `site` in `astro.config.mjs` and `url` in `site.ts`, add `public/CNAME` containing the domain, and configure DNS.
+Because the repo is named `<account>.github.io`, GitHub serves it from the domain root, so project pages live at `https://miprotick-work.github.io/<project>/<resource>/`, for example <https://miprotick-work.github.io/hidayah/privacy-policy/>.
+
+> ⚠️ Don't rename the repo. Any other name moves the whole site under `/<repo-name>/` and breaks the URLs that app stores link to.
+
+In components, build internal links with `url('/path/')` from [`src/lib/url.ts`](src/lib/url.ts).
 
 ---
 

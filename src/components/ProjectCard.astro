@@ -2,6 +2,7 @@
 import type { Project } from '../lib/projects';
 import { statusLabel } from '../lib/projects';
 import { getRepoStats } from '../lib/github';
+import { url } from '../lib/url';
 
 interface Props {
   project: Project;
@@ -16,7 +17,7 @@ const num = String(index + 1).padStart(2, '0');
 
 <a
   class="card"
-  href={`/${project.id}/`}
+  href={url(`/${project.id}/`)}
   style={data.accent ? `--card-accent:${data.accent}` : undefined}
 >
   <div class="top">

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import Base from '../../layouts/Base.astro';
 import { site } from '../../config/site';
+import { url } from '../../lib/url';
 import {
   getProjects,
   getResourcesFor,
@@ -42,8 +43,8 @@ const title = `${resource.data.title} — ${project.data.name}`;
 <Base title={title} description={resource.data.description ?? `${resource.data.title} for ${project.data.name}.`}>
   <div class="wrap">
     <nav class="crumbs mono" aria-label="Breadcrumb">
-      <a href="/">~</a><span>/</span>
-      <a href={`/${project.id}/`}>{project.id}</a><span>/</span>
+      <a href={url("/")}>~</a><span>/</span>
+      <a href={url(`/${project.id}/`)}>{project.id}</a><span>/</span>
       <span aria-current="page">{slug}</span>
     </nav>
 
@@ -64,7 +65,7 @@ const title = `${resource.data.title} — ${project.data.name}`;
             <ul>
               {siblings.map((r) => (
                 <li>
-                  <a href={`/${r.id}/`} aria-current={r.id === resource.id ? 'page' : undefined}>{resourceLabel(r)}</a>
+                  <a href={url(`/${r.id}/`)} aria-current={r.id === resource.id ? 'page' : undefined}>{resourceLabel(r)}</a>
                 </li>
               ))}
             </ul>

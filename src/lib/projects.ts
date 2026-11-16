@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { resourceTypes, site } from '../config/site';
+import { withBase } from './url';
 
 export type Project = CollectionEntry<'projects'>;
 export type Resource = CollectionEntry<'resources'>;
@@ -52,7 +53,7 @@ export function contactLinksHtml(emails: string[]) {
  * links. Resolved at render time so overrides apply to every document.
  */
 export function renderedHtml(entry: Project | Resource, emails: string[]) {
-  return (entry.rendered?.html ?? '').replaceAll('{{contact}}', contactLinksHtml(emails));
+  return withBase((entry.rendered?.html ?? '').replaceAll('{{contact}}', contactLinksHtml(emails)));
 }
 
 export const statusLabel: Record<Project['data']['status'], string> = {

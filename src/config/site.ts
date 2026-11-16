@@ -15,9 +15,9 @@ export const site = {
   githubAccounts: ['miprotick', 'miprotick-work'],
   /** Default contact(s) for all projects. A project can override with `contactEmails` in its project.md. */
   contactEmails: ['miprotick.work@gmail.com', 'developer.protick@gmail.com'],
-  /** Public URL of the deployed site (no trailing slash). */
+  /** Public URL of the site (keep in sync with `site` in astro.config.mjs). */
   url: 'https://miprotick-work.github.io',
-  /** Repo holding this site — used for "revision history" links on legal pages. */
+  /** GitHub repo of this site, used for "Revision history" links on legal pages. */
   sourceRepo: 'miprotick-work/miprotick-work.github.io',
   sourceBranch: 'main',
   /** Other profiles (GitHub accounts are added automatically from githubAccounts). */

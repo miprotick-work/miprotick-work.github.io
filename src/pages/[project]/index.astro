@@ -12,6 +12,7 @@ import {
   type Project,
 } from '../../lib/projects';
 import { getRepoStats } from '../../lib/github';
+import { url } from '../../lib/url';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -36,7 +37,7 @@ const links = [
 <Base title={data.name} description={data.tagline}>
   <article class="wrap" style={data.accent ? `--accent:${data.accent}` : undefined}>
     <nav class="crumbs mono" aria-label="Breadcrumb">
-      <a href="/">~</a><span>/</span><span aria-current="page">{project.id}</span>
+      <a href={url("/")}>~</a><span>/</span><span aria-current="page">{project.id}</span>
     </nav>
 
     <header class="head">
@@ -68,7 +69,7 @@ const links = [
             <ul class="res">
               {resources.map((r) => (
                 <li>
-                  <a href={`/${r.id}/`}>
+                  <a href={url(`/${r.id}/`)}>
                     <span>{resourceLabel(r)}</span>
                     <span class="mono path">/{resourceParts(r).slug}</span>
                   </a>

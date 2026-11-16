@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
 ---
 
 <Base title="Not found" noindex>
@@ -7,7 +8,7 @@ import Base from '../layouts/Base.astro';
     <p class="mono code">404 · path not found</p>
     <h1>Nothing lives here.</h1>
     <p>The page may have moved, or the link might be mistyped.</p>
-    <a class="btn primary" href="/">← Back to the workspace</a>
+    <a class="btn primary" href={url("/")}>← Back to the workspace</a>
   </section>
 </Base>
 
