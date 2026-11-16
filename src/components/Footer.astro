@@ -7,6 +7,9 @@ const year = new Date().getFullYear();
   <div class="wrap row">
     <p class="mono">© {year} {site.author}</p>
     <ul>
+      {site.githubAccounts.map((u) => (
+        <li><a href={`https://github.com/${u}`} rel="me noopener" target="_blank" title={`GitHub: ${u}`}>@{u}</a></li>
+      ))}
       {site.socials.map((s) => (
         <li><a href={s.href} rel="me noopener" target="_blank">{s.label}</a></li>
       ))}
@@ -30,7 +33,7 @@ const year = new Date().getFullYear();
     align-items: center;
   }
   p { margin: 0; }
-  ul { list-style: none; display: flex; gap: 1.25rem; margin: 0; padding: 0; }
+  ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 0; padding: 0; }
   a { font: 500 0.88rem var(--font-display); text-decoration: none; }
   a:hover { color: var(--ink); }
 </style>

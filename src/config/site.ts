@@ -9,18 +9,21 @@ export const site = {
   tagline: 'Software, apps & experiments — built in the open.',
   intro:
     'I design and build software products end to end. This is the home of my work: every project, and every public document that goes with it.',
-  githubUser: 'protick-dev',
+  /** Primary GitHub account: hosts this site and is linked in the header and hero. */
+  githubUser: 'miprotick-work',
+  /** All GitHub accounts shown on the site (About section, footer). */
+  githubAccounts: ['miprotick', 'miprotick-work'],
   /** Default contact(s) for all projects. A project can override with `contactEmails` in its project.md. */
   contactEmails: ['miprotick.work@gmail.com', 'developer.protick@gmail.com'],
   /** Public URL of the deployed site (no trailing slash). */
-  url: 'https://protick-dev.github.io',
+  url: 'https://miprotick-work.github.io',
   /** Repo holding this site — used for "revision history" links on legal pages. */
-  sourceRepo: 'protick-dev/protick-dev.github.io',
+  sourceRepo: 'miprotick-work/miprotick-work.github.io',
   sourceBranch: 'main',
+  /** Other profiles (GitHub accounts are added automatically from githubAccounts). */
   socials: [
-    { label: 'GitHub', href: 'https://github.com/protick-dev' },
     // { label: 'LinkedIn', href: 'https://www.linkedin.com/in/…' },
-  ],
+  ] as { label: string; href: string }[],
 } as const;
 
 /**

@@ -1,7 +1,7 @@
 ---
 name: Hidayah
 tagline: A guidance for those conscious of Allah.
-repo: protick-dev/Hidayah           # live GitHub stats appear once the repo is public
+repo: miprotick-work/Hidayah           # live GitHub stats appear once the repo is public
 status: active                      # active | beta | maintained | archived | concept
 platforms: [Android]
 tags: [Reminder, Hidayat, Quran]

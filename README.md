@@ -1,6 +1,6 @@
-# protick-dev.github.io
+# miprotick-work.github.io
 
-The portfolio and public-resource hub for every project by **protick-dev**. It is built with [Astro](https://astro.build) and deployed to GitHub Pages.
+The portfolio and public-resource hub for every project by **miprotick-work**. It is built with [Astro](https://astro.build) and deployed to GitHub Pages.
 
 | URL | What |
 | --- | --- |
@@ -49,7 +49,7 @@ Everything site-wide (brand, name, tagline, contact emails, socials) is in [`src
 
 ## Deploy (GitHub Pages)
 
-1. Create a **public** repo named `protick-dev.github.io` under the `protick-dev` account.
+1. Create a **public** repo named `miprotick-work.github.io` under the `miprotick-work` account.
 2. Push this folder to its `main` branch.
 3. Go to **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**.
 

@@ -1,7 +1,7 @@
 ---
 name: Example App
 tagline: One-line description of Example App.
-# repo: protick-dev/example-app      # uncomment for live GitHub stats (public repos only)
+# repo: miprotick-work/example-app      # uncomment for live GitHub stats (public repos only)
 status: active                      # active | beta | maintained | archived | concept
 platforms: [Android, iOS]
 tags: []

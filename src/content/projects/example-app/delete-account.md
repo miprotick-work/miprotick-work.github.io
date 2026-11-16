@@ -7,7 +7,7 @@ effectiveDate: 2026-11-15
 <!--
   Google Play requires a public URL that explains how users can request deletion
   of their account and data. This page is meant to be that URL:
-  https://protick-dev.github.io/example-app/delete-account/
+  https://miprotick-work.github.io/example-app/delete-account/
 -->
 
 You can delete your **Example App** account and its associated data at any time.

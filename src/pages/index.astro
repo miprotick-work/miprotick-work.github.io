@@ -21,9 +21,11 @@ const ordered = [...featured, ...others];
       <p class="lede">{site.intro}</p>
       <div class="cta">
         <a class="btn primary" href="#work">See the work ↓</a>
-        <a class="btn" href={`https://github.com/${site.githubUser}`} target="_blank" rel="me noopener">
-          github.com/{site.githubUser}
-        </a>
+        {site.githubAccounts.map(ga => (
+          <a class="btn" href={`https://github.com/${ga}`} target="_blank" rel="me noopener">
+            github.com/{ga}
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -61,7 +63,12 @@ const ordered = [...featured, ...others];
           <dt class="eyebrow">Contact</dt>
           {site.contactEmails.map((e) => <dd><a href={`mailto:${e}`}>{e}</a></dd>)}
         </div>
-        <div><dt class="eyebrow">GitHub</dt><dd><a href={`https://github.com/${site.githubUser}`} target="_blank" rel="me noopener">@{site.githubUser}</a></dd></div>
+        <div>
+          <dt class="eyebrow">GitHub</dt>
+          {site.githubAccounts.map((u) => (
+            <dd><a href={`https://github.com/${u}`} target="_blank" rel="me noopener">@{u}</a></dd>
+          ))}
+        </div>
       </dl>
     </div>
   </section>
